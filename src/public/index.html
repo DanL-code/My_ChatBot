@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>My ChatBot</title>
+</head>
+<body onload="sendInitialMessage()">
+  <h1 style="margin-left: 50px;">Welcome to My ChatBot</h1>
+  <div class="container">
+    <div class="left-panel">
+      <img src="homePage.jpg" alt="HomePage">
+      <div class="intro">
+        <p class="introTitle"><strong> Get AI-Powered Content Suggestions in Seconds</strong></p>
+        <p class="introContents">Feel free to type your message in the input field on the right, and our ChatBot will respond promptly.</p>
+      </div>
+      
+    </div>
+    <div class="right-panel">
+      <div id="chat-box"></div>
+      <div class="input-container">
+        <input type="text" id="user-input" placeholder="Enter your message..." onkeydown="handleKeyDown(event)">
+        <button onclick="sendMessage()"><img src="submitIcon.png" alt="Send"></button>
+      </div>
+   </div>
+</div>
+
+<footer>
+  <p><strong>&copy; 2024 Made with ❤️ by Dan L</strong></p>
+</footer>
+
+  <script>
+    async function sendMessage() {
+      const chatBox = document.getElementById('chat-box');
+      const userInput = document.getElementById('user-input').value;
+      chatBox.innerHTML += `<div class="user-message"><img src="userIcon.png" alt="You"><strong>You<br></strong><p class="userInput">${userInput}</p></div>`;
+      document.getElementById('user-input').value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+      
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `message=${userInput}`,
+      });
+
+      let chatResponse = await response.text();
+      chatResponse = chatResponse.replace(/\n/g, "<br>");
+      chatBox.innerHTML += `<div class="bot-message"><img src="chatBotIcon.png" alt="ChatBot"><strong>ChatBot<br></strong><p class="chatResponse">${chatResponse}</p></div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+      
+    }
+    
+    function handleKeyDown(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function sendInitialMessage() {
+      const chatBox = document.getElementById('chat-box');
+      chatBox.innerHTML += `<div class="bot-message"><img src="chatBotIcon.png" alt="ChatBot"><strong>ChatBot<br></strong><p class="chatResponse">Hello! How can I assist you today?</p></div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
