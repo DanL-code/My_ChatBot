@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Chat</title>
+</head>
+<body>
+  <h1 style="margin-left: 200px;">Welcome to My Chat</h1>
+  <div>
+    <div id="chat-box" style="overflow-y: scroll; height: 500px; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; margin-left: 200px; margin-right: 200px;"></div>
+    <input type="text" id="user-input" placeholder="Enter your message..." style="margin-left: 200px;">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const chatBox = document.getElementById('chat-box');
+      const userInput = document.getElementById('user-input').value;
+      chatBox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+      document.getElementById('user-input').value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+      
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `message=${userInput}`,
+      });
+
+      let chatResponse = await response.text();
+      chatResponse = chatResponse.replace(/\n/g, "<br>");
+      chatBox.innerHTML += `<p><strong>ChatBot:</strong> ${chatResponse}</p>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+      
+    }
+  </script>
+</body>
+</html>
