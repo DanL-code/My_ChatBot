@@ -21,12 +21,11 @@
       document.getElementById('user-input').value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
       
-      const response = await fetch('/ask', {
+      const response = await fetch(`/ask?message=${encodeURIComponent(userInput)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `message=${userInput}`,
+        }
       });
 
       let chatResponse = await response.text();

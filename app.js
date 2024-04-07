@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/ask', async (req, res) => {
-  const userMessage = req.body.message;
+app.get('/ask', async (req, res) => {
+  const userMessage = req.query.message;
 
   try {
     const completion = await openai.chat.completions.create({
