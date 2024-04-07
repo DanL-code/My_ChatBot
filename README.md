@@ -21,7 +21,7 @@ OR Create a .env file in your project directory. Add the following line to the .
 
 ## Screenshot
 
-
+![Screenshot of Chatbot](https://github.com/DanL-code/My_ChatBot/blob/main/ScreenShot.png)
 
 ## Author
 
